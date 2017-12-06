@@ -24,16 +24,16 @@ public class ReportKit360 {
         for(int i=1;i<=7;i++){
             Line line=new Line();
             float random=Math.round(Math.random()*10);
-            line.setXValue("星期"+i);
-            line.setYValue(20+random);
+            line.setxValue("星期"+i);
+            line.setyValue(20+random);
             line.setGroupName("下周");
             list.add(line);
         }
         for(int i=1;i<=7;i++){
             Line line=new Line();
             float random=Math.round(Math.random()*10);
-            line.setXValue("星期"+i);
-            line.setYValue(20+random);
+            line.setxValue("星期"+i);
+            line.setyValue(20+random);
             line.setGroupName("这周");
             list.add(line);
         }
@@ -52,7 +52,8 @@ public class ReportKit360 {
             String saveFilePath=kit.exportToFile(fileName,data);
             return  saveFilePath;
         } catch (Exception e) {
-            log.error("PDF生成失败{}", ExceptionUtils.getFullStackTrace(e));
+            System.out.println("PDF生成失败{}"+ ExceptionUtils.getFullStackTrace(e));
+            //log.error("PDF生成失败{}", ExceptionUtils.getFullStackTrace(e));
             return null;
         }
 

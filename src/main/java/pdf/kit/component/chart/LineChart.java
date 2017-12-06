@@ -49,12 +49,13 @@ public abstract class LineChart {
         }
         DefaultCategoryDataset dataSet=new DefaultCategoryDataset();
         for(Line line:lineList){
-            dataSet.addValue(line.getYValue(),line.getGroupName(),line.getXValue());
+            dataSet.addValue(line.getyValue(),line.getGroupName(),line.getxValue());
         }
         try {
             return  drawLineChar(title,xLabel,yLabel,dataSet,picId);
         }catch (Exception ex){
-            log.error("画图异常{}",ex);
+            System.out.println("画图异常 : "+ex);
+            //log.error("画图异常{}",ex);
             return "";
         }
 
@@ -162,7 +163,8 @@ public abstract class LineChart {
             Font font = loadFont(fontPath,style,fontSize);
             return font;
         } catch (IOException e) {
-            log.error("字体加载异常{}",ExceptionUtils.getFullStackTrace(e));
+            System.out.println("字体加载异常 : "+ExceptionUtils.getFullStackTrace(e));
+            //log.error("字体加载异常{}",ExceptionUtils.getFullStackTrace(e));
         }
         return null;
     }
