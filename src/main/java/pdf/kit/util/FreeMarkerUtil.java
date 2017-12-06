@@ -22,20 +22,23 @@ public class FreeMarkerUtil {
      * @description 获取模板
      */
     public static String getContent(String fileName,Object data){
-
-        String templatePath=getPDFTemplatePath(fileName);
-        String templateFileName=getTemplateName(templatePath);
-        String templateFilePath=getTemplatePath(templatePath);
+    	
+        String templatePath=getPDFTemplatePath(fileName).replace("\\", "/");
+        String templateFileName=getTemplateName(templatePath).replace("\\", "/");
+        String templateFilePath=getTemplatePath(templatePath).replace("\\", "/");
+        System.out.println("templatePath:"+templatePath);
+        System.out.println("templateFileName:"+templateFileName);
+        System.out.println("templateFilePath:"+templateFilePath);
         if(StringUtils.isEmpty(templatePath)){
             throw new FreeMarkerException("templatePath can not be empty!");
         }
-        try{
+        try{System.out.println("进到这里了，有来无回1");
             Configuration config = new Configuration(Configuration.VERSION_2_3_25);
             config.setDefaultEncoding("UTF-8");
             config.setDirectoryForTemplateLoading(new File(templateFilePath));
             config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-            config.setLogTemplateExceptions(false);
-            Template template = config.getTemplate(templateFileName);
+            config.setLogTemplateExceptions(false);System.out.println("进到这里了，有来无回2");
+            Template template = config.getTemplate(templateFileName);System.out.println("进到这里了，有来无回3");
             StringWriter writer = new StringWriter();
             template.process(data, writer);
             writer.flush();
@@ -50,7 +53,14 @@ public class FreeMarkerUtil {
         if(StringUtils.isEmpty(templatePath)){
             return "";
         }
-        String path=templatePath.substring(0,templatePath.lastIndexOf("/"));
+        String path = "";
+        int ss = templatePath.lastIndexOf("/");
+        if(ss==-1){
+        	path=templatePath.substring(0,templatePath.lastIndexOf("\\"));
+        } else {
+        	path=templatePath.substring(0,templatePath.lastIndexOf("/"));
+        }
+        System.out.println("八嘎呀路path:"+path);
         return path;
     }
 
@@ -70,11 +80,12 @@ public class FreeMarkerUtil {
      */
     public static String getPDFTemplatePath(String fileName){
         String  classpath=PDFKit.class.getClassLoader().getResource("").getPath();
-        String templatePath=classpath+"/templates";
+        String templatePath=classpath+"templates";
+        System.out.println("战神归来009："+templatePath);
         File file=new File(templatePath);
         if(!file.isDirectory()){
             throw new PDFException("PDF模板文件不存在,请检查templates文件夹!");
-        }
+        }System.out.println("能进到这里吗？");
         String pdfFileName=fileName.substring(0,fileName.lastIndexOf("."));
         File defaultTemplate=null;
         File matchTemplate=null;
@@ -98,17 +109,14 @@ public class FreeMarkerUtil {
                 break;
             }
         }
-        if(matchTemplate!=null){
+        if(matchTemplate!=null){System.out.println("八嘎雅鹿111");
+        	System.out.println("八嘎雅鹿111："+matchTemplate.getAbsolutePath());
             return matchTemplate.getAbsolutePath();
         }
-        if(defaultTemplate!=null){
+        if(defaultTemplate!=null){System.out.println("八嘎雅鹿222");
             return defaultTemplate.getAbsolutePath();
-        }
-
+        }System.out.println("八嘎雅鹿333");
         return null;
-
     }
-
-
 
 }

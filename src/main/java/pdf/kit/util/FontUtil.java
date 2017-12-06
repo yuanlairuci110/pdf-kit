@@ -8,7 +8,8 @@ public class FontUtil {
 
     public static String getFontPath(String fontName){
         String calsspath=FontUtil.class.getClassLoader().getResource("").getPath();
-        return calsspath+"/fonts/"+fontName;
+        System.out.println("八嘎008："+calsspath+"fonts/"+fontName);
+        return calsspath+"fonts/"+fontName;
     }
 
 }

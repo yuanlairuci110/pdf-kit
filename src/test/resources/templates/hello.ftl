@@ -24,7 +24,7 @@
     <!--外部链接-->
     <p>静态logo图</p>
     <div>
-        <img src="${imageUrl}" alt="美团点评" width="110" height="20.8"/>
+        <img src="${imageUrl}" alt="美团点评" width="512" height="359"/>
     </div>
     <!--动态生成的图片-->
     <p>气温变化对比图</p>
@@ -46,8 +46,6 @@
     </div>
 
 </div>
-
-
 <!--第二页结束-->
 </body>
 </html>

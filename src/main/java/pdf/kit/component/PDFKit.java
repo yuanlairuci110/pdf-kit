@@ -31,37 +31,40 @@ public class PDFKit {
      *
      */
     public String exportToFile(String fileName,Object data){
+    	try {
+    		String htmlData= FreeMarkerUtil.getContent(fileName, data);
+            if(StringUtils.isEmpty(saveFilePath)){
+                saveFilePath=getDefaultSavePath(fileName);
+            }
+            File file=new File(saveFilePath);
+            if(!file.getParentFile().exists()){
+                file.getParentFile().mkdirs();
+            }
+            FileOutputStream outputStream=null;
+            try{
+                //设置输出路径
+                outputStream=new FileOutputStream(saveFilePath);
+                //设置文档大小
+                Document document = new Document(PageSize.A4);
+                PdfWriter writer = PdfWriter.getInstance(document, outputStream);
 
-        String htmlData= FreeMarkerUtil.getContent(fileName, data);
-        if(StringUtils.isEmpty(saveFilePath)){
-            saveFilePath=getDefaultSavePath(fileName);
-        }
-        File file=new File(saveFilePath);
-        if(!file.getParentFile().exists()){
-            file.getParentFile().mkdirs();
-        }
-        FileOutputStream outputStream=null;
-        try{
-            //设置输出路径
-            outputStream=new FileOutputStream(saveFilePath);
-            //设置文档大小
-            Document document = new Document(PageSize.A4);
-            PdfWriter writer = PdfWriter.getInstance(document, outputStream);
+                //设置页眉页脚
+                PDFBuilder builder = new PDFBuilder(headerFooterBuilder,data);
+                builder.setPresentFontSize(10);
+                writer.setPageEvent(builder);
 
-            //设置页眉页脚
-            PDFBuilder builder = new PDFBuilder(headerFooterBuilder,data);
-            builder.setPresentFontSize(10);
-            writer.setPageEvent(builder);
-
-            //输出为PDF文件
-            convertToPDF(writer,document,htmlData);
-        }catch(Exception ex){
-            throw new PDFException("PDF export to File fail",ex);
-        }finally{
-            IOUtils.closeQuietly(outputStream);
-        }
-        return saveFilePath;
-
+                //输出为PDF文件
+                convertToPDF(writer,document,htmlData);
+            }catch(Exception ex){
+                throw new PDFException("PDF export to File fail",ex);
+            }finally{
+                IOUtils.closeQuietly(outputStream);
+            }
+            
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return saveFilePath;
     }
 
 
@@ -78,7 +81,6 @@ public class PDFKit {
                                                      HttpServletResponse response){
 
         String html= FreeMarkerUtil.getContent(ftlPath,data);
-
         try{
             OutputStream out = null;
             ITextRenderer render = null;
@@ -124,6 +126,7 @@ public class PDFKit {
     private  String  getDefaultSavePath(String fileName){
         String classpath=PDFKit.class.getClassLoader().getResource("").getPath();
         String saveFilePath=classpath+"pdf/"+fileName;
+        System.out.println("战神1："+saveFilePath);
         File f=new File(saveFilePath);
         if(!f.getParentFile().exists()){
             f.mkdirs();
@@ -143,19 +146,14 @@ public class PDFKit {
     public HeaderFooterBuilder getHeaderFooterBuilder() {
         return headerFooterBuilder;
     }
-
     public void setHeaderFooterBuilder(HeaderFooterBuilder headerFooterBuilder) {
         this.headerFooterBuilder = headerFooterBuilder;
     }
     public String getSaveFilePath() {
         return saveFilePath;
     }
-
     public void setSaveFilePath(String saveFilePath) {
         this.saveFilePath = saveFilePath;
     }
-
-
-
 
 }
