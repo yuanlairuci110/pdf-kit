@@ -1,18 +1,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.xinye</groupId>
-  <artifactId>xinye</artifactId>
-  <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>xinye Maven Webapp</name>
-  <url>http://maven.apache.org</url>
-  
-  <dependencies>
-    <dependency>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.xinye</groupId>
+    <artifactId>xinye</artifactId>
+    <packaging>war</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>xinye Maven Webapp</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <!--<dependency>-->
+        <!--<groupId>com.itextpdf</groupId>-->
+        <!--<artifactId>itextpdf</artifactId>-->
+        <!--<version>5.4.2</version>-->
+        <!--</dependency>-->
+        <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
-            <version>5.4.2</version>
+            <version>5.5.10</version>
         </dependency>
         <dependency>
             <groupId>com.itextpdf.tool</groupId>
@@ -97,8 +102,8 @@
             <version>2.5</version>
             <scope>provided</scope>
         </dependency>
-  </dependencies>
-  <!--增加的配置,过滤ttf文件的匹配-->
+    </dependencies>
+    <!--增加的配置,过滤ttf文件的匹配-->
     <profiles>
         <profile>
             <id>release</id>
@@ -166,9 +171,29 @@
             </distributionManagement>
         </profile>
     </profiles>
-  
-  
-  <build>
-    <finalName>xinye</finalName>
-  </build>
+
+
+    <build>
+        <finalName>xinye</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <!--增加的配置,过滤ttf文件的匹配-->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
